@@ -12,10 +12,13 @@
 
     <div class="mode-selector">
       <button id="btn-de-en" class="mode-btn active" onclick="setMode('de-en')">
-        Deutsch → Englisch
+        DE → EN
       </button>
       <button id="btn-en-de" class="mode-btn" onclick="setMode('en-de')">
-        Englisch → Deutsch
+        EN → DE
+      </button>
+      <button id="btn-quiz" class="mode-btn" onclick="setMode('quiz')">
+        Quiz
       </button>
     </div>
 
@@ -27,17 +30,41 @@
     <div id="card" class="card">
       <div id="question-label" class="question-label"></div>
       <div id="question" class="question"></div>
-      <input
-        id="answer-input"
-        class="answer-input"
-        type="text"
-        placeholder="Antwort eingeben..."
-        autocomplete="off"
-        spellcheck="false"
-      />
-      <button id="check-btn" class="check-btn" onclick="checkAnswer()">Prüfen</button>
+
+      <!-- Tipp-Modus -->
+      <div id="type-section">
+        <input
+          id="answer-input"
+          class="answer-input"
+          type="text"
+          placeholder="Antwort eingeben..."
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button id="check-btn" class="check-btn" onclick="checkAnswer()">Prüfen</button>
+      </div>
+
+      <!-- Quiz-Modus -->
+      <div id="quiz-section" class="hidden">
+        <div id="quiz-options" class="quiz-options"></div>
+      </div>
+
       <div id="feedback" class="feedback hidden"></div>
       <div id="correct-answer" class="correct-answer hidden"></div>
+
+      <!-- Nachtippen bei falscher Antwort -->
+      <div id="retry-section" class="retry-section hidden">
+        <div class="retry-label">Tippe die richtige Antwort nochmal ab:</div>
+        <input
+          id="retry-input"
+          class="answer-input"
+          type="text"
+          placeholder="Richtige Antwort..."
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+
       <button id="next-btn" class="next-btn hidden" onclick="nextCard()">Weiter →</button>
     </div>
 

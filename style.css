@@ -29,18 +29,18 @@ h1 {
 /* Mode buttons */
 .mode-selector {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 20px;
 }
 
 .mode-btn {
   flex: 1;
-  padding: 12px;
+  padding: 11px 8px;
   border: 2px solid #4a90e2;
   background: white;
   color: #4a90e2;
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -263,4 +263,58 @@ h1 {
 
 .restart-btn:hover {
   background: #357abd;
+}
+
+/* Quiz options */
+.quiz-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.quiz-option {
+  padding: 14px 10px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: center;
+  line-height: 1.35;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.quiz-option:hover:not(:disabled) {
+  border-color: #4a90e2;
+  background: #e8f0fd;
+}
+
+.quiz-option.correct {
+  border-color: #48bb78;
+  background: #c6f6d5;
+  color: #276749;
+  font-weight: 600;
+}
+
+.quiz-option.wrong {
+  border-color: #fc8181;
+  background: #fed7d7;
+  color: #9b2c2c;
+  font-weight: 600;
+}
+
+.quiz-option:disabled {
+  cursor: default;
+}
+
+/* Retry section */
+.retry-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.retry-label {
+  font-size: 0.85rem;
+  color: #718096;
 }
