@@ -218,19 +218,24 @@ document.getElementById('answer-input').addEventListener('keydown', (e) => {
 
 // --- Quiz mode ---
 function renderQuizOptions(item) {
-  const correctAnswer = quizDirection === 'en-de' ? item.de : item.en;
+  const answerKey = quizDirection === 'en-de' ? 'de' : 'en';
+  const correctAnswer = item[answerKey];
   const optionsEl = document.getElementById('quiz-options');
   optionsEl.innerHTML = '';
 
-  // 3 unique wrong answers (no duplicate values in the answer language)
+  // Collect 3 unique wrong answer values from a shuffled copy of vocabulary
+  const wrongValues = [];
   const seen = new Set([correctAnswer]);
-  const wrongPool = shuffle(vocabulary.filter(v => {
-    const val = quizDirection === 'en-de' ? v.de : v.en;
-    if (v === item || seen.has(val)) return false;
-    seen.add(val);
-    return true;
-  }));
-  const options = shuffle([correctAnswer, ...wrongPool.slice(0, 3).map(v => quizDirection === 'en-de' ? v.de : v.en)]);
+  for (const v of shuffle([...vocabulary])) {
+    const val = v[answerKey];
+    if (!seen.has(val)) {
+      seen.add(val);
+      wrongValues.push(val);
+      if (wrongValues.length === 3) break;
+    }
+  }
+
+  const options = shuffle([correctAnswer, ...wrongValues]);
 
   options.forEach(opt => {
     const btn = document.createElement('button');
