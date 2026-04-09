@@ -30,6 +30,7 @@ const vocabulary = [
 
 // --- State ---
 let mode = 'de-en'; // 'de-en' | 'en-de' | 'quiz'
+let quizDirection = 'en-de'; // per-card direction in quiz mode
 let deck = [];
 let currentIndex = 0;
 let correctCount = 0;
@@ -59,7 +60,7 @@ function getCurrentCorrectAnswer() {
   const item = deck[currentIndex];
   if (mode === 'de-en') return item.en;
   if (mode === 'en-de') return item.de;
-  return item.de; // quiz: EN shown, DE is answer
+  return quizDirection === 'en-de' ? item.de : item.en; // quiz
 }
 
 // --- Mode ---
@@ -104,8 +105,9 @@ function showCard() {
     questionText = item.en;
     label = 'Englisch → Deutsch';
   } else {
-    questionText = item.en;
-    label = 'Welche Übersetzung ist richtig?';
+    quizDirection = Math.random() < 0.5 ? 'en-de' : 'de-en';
+    questionText = quizDirection === 'en-de' ? item.en : item.de;
+    label = quizDirection === 'en-de' ? 'Englisch → Deutsch' : 'Deutsch → Englisch';
   }
 
   document.getElementById('question-label').textContent = label;
@@ -216,14 +218,19 @@ document.getElementById('answer-input').addEventListener('keydown', (e) => {
 
 // --- Quiz mode ---
 function renderQuizOptions(item) {
-  const correctAnswer = item.de;
+  const correctAnswer = quizDirection === 'en-de' ? item.de : item.en;
   const optionsEl = document.getElementById('quiz-options');
   optionsEl.innerHTML = '';
 
-  // 3 unique wrong answers (no duplicate DE values)
+  // 3 unique wrong answers (no duplicate values in the answer language)
   const seen = new Set([correctAnswer]);
-  const wrongPool = shuffle(vocabulary.filter(v => v !== item && !seen.has(v.de) && !seen.add(v.de)));
-  const options = shuffle([correctAnswer, ...wrongPool.slice(0, 3).map(v => v.de)]);
+  const wrongPool = shuffle(vocabulary.filter(v => {
+    const val = quizDirection === 'en-de' ? v.de : v.en;
+    if (v === item || seen.has(val)) return false;
+    seen.add(val);
+    return true;
+  }));
+  const options = shuffle([correctAnswer, ...wrongPool.slice(0, 3).map(v => quizDirection === 'en-de' ? v.de : v.en)]);
 
   options.forEach(opt => {
     const btn = document.createElement('button');
